@@ -191,13 +191,13 @@ uv run python data/scripts/ingest_rag.py --active-only
 
 ---
 
-## 강의 노트 
+## 강의 노트
 - 1강 핵심 목표 : StartCode의 핵심 구조 이해
 
 
-### TODO - 1강 
+### TODO - 1강
 - [v] 환경 세팅
-    - [v] Code Class Live Share 익스텐션 설치 
+    - [v] Code Class Live Share 익스텐션 설치
         - [v] 화면 공유 테스트
     - [v] 가상 환경 생성
         - uv sync --all-extras
@@ -205,18 +205,18 @@ uv run python data/scripts/ingest_rag.py --active-only
     - [v] Supabase 설정
         - [v] 프로젝트에 data/supabase_schema.sql 실행
         - [v] 스케줄 데이터 저장
-            - uv run python data/scripts/ingest_data.py 
+            - uv run python data/scripts/ingest_data.py
         - [v] RAG 데이터 저장
             - uv run python data/scripts/ingest_rag.py
-    - [v] 프로젝트 실행 
+    - [v] 프로젝트 실행
         - uv run uvicorn app.main:app --reload
-    
-- [v] StartCode 구조 이해 
-    - [v] 1강 핵심 코드 이해 
-        ├── app/                  
+
+- [v] StartCode 구조 이해
+    - [v] 1강 핵심 코드 이해
+        ├── app/
         ├── [v] main.py                # FastAPI 진입점 (앱 생성·미들웨어·라우터 등록)
         ├── core/
-        │   └── [v] config.py          # 환경변수 설정 
+        │   └── [v] config.py          # 환경변수 설정
         ├── schemas/
             └── [v] chat.py            # 채팅 요청/응답 스키마
     - [v] 기타 코드
@@ -244,7 +244,7 @@ app/
 │   ├── nodes.py           ← 노드 구현
 │   ├── edges.py           ← 라우팅 로직
 │   └── graph.py           ← 그래프 조립 + 싱글톤
-├── repositories/          ← DB 접근 계층 
+├── repositories/          ← DB 접근 계층
 │   ├── rag.py             ← RAG 검색 (Supabase pgvector)
 │   ├── schedule.py        ← 스케줄 조회
 │   └── fan_letter.py      ← 팬레터 저장
@@ -278,7 +278,7 @@ app/
 - [v] API 서버 구현
     - [v] api/routes/chat.py : 엔드포인트에 따라 서비스 제공 (루미 챗봇)
 - [v] 프론트엔드 구현
-    - [v] ui.py : Gradio 사용 
+    - [v] ui.py : Gradio 사용
 - [v] main.py : lifespan에서 graph 싱글톤 로드 + 채팅 라우터 등록
 
 ### 이번 시간 강의의 핵심
@@ -288,7 +288,7 @@ app/
 
 ---
 
-## 강의 노트 3강  
+## 강의 노트 3강
 - 핵심 목표 : 실시간 스트리밍 구현 (2강에서의 MVP 개선)
 
 - 스트리밍 구현을 위한 SSE 핵심
@@ -332,7 +332,7 @@ app/
 - [] app/schemas/chat.py : StreamEvent, to_sse()
 - [] app/api/routes/chat.py : SSE 구현. stream_with_status 함수
   - [] SSE 엔드포인트 추가
-- [] app/ui.py : 스트리밍 데이터를 받아서 처리할 수 있도록 함수 
+- [] app/ui.py : 스트리밍 데이터를 받아서 처리할 수 있도록 함수
 
 ### 이번 시간 강의의 핵심
 - SSE 구현을 어떻게 하는가?
@@ -344,7 +344,7 @@ app/
 ## 강의 노트 4강
 - 핵심 목표 : CI 파이프라인 구축 - 코드를 main에 합치기 전에 기계가 자동으로 검사(린트,테스트,AI리뷰)하게 만들기
 
-### 핵심 개념 
+### 핵심 개념
 - **CI (Continuous Integration)** : 코드를 합치기(Merge) 전에 린트·테스트를 자동으로 실행해, 불량 코드가 main에 들어가는 걸 막는 자동화.
 - **Pull Request (PR)** : "내 브랜치의 변경사항을 main에 합쳐주세요"라고 요청하는 것. 이 시점에 코드 리뷰 + CI 검사가 돌고, 통과해야 Merge 한다.
 - **단위 테스트 (Unit Test)** : 함수·API 하나가 기대한 대로 동작하는지 검증하는 자동화 코드(pytest). 코드를 고쳐도 기존 기능이 안 깨졌는지 즉시 확인 가능.
@@ -366,7 +366,7 @@ app/
       git remote add origin https://github.com/kimjunu10/lumi_agent.git
       git push -u origin main
       ```
-    - [] GitHub Secrets 등록 
+    - [] GitHub Secrets 등록
         - repo → Settings → Secrets and variables → Actions → New repository secret
         - `UPSTAGE_API_KEY` / `SUPABASE_URL` / `SUPABASE_KEY` 3개 등록
 - [] CI 워크플로우 추가 (새 브랜치 → push → PR)
@@ -374,7 +374,7 @@ app/
       ```bash
       git checkout -b feat/ci
       ```
-    - [] `.github/workflows/ci.yml` 작성 
+    - [] `.github/workflows/ci.yml` 작성
     - [] 변경된 파일 git add, commit, push
       ```bash
       git add .github/workflows/ci.yml
@@ -388,7 +388,7 @@ app/
     - [] 일부러 문제 있는 `test.py` 를 만들기 (안 쓰는 import + 줄 끝 공백)
       ```python
       import os  # 안 쓰는 import (Ruff가 잡음)
-      x   =     1     # 뒤에 불필요한 공백 
+      x   =     1     # 뒤에 불필요한 공백
       ```
     - [] 린트 (안 쓰는 import·문법 실수 검사)
       ```bash
@@ -404,7 +404,7 @@ app/
       ```bash
       uv run pytest tests/ -v            # CI의 test Job과 동일한 명령. push 전에 로컬에서 먼저 통과 확인
       ```
-        - [] health API 등록 
+        - [] health API 등록
     - [] 확인 끝났으면 `test.py` 삭제
 - [] 로컬 사전 검사 ② — pre-commit 훅 (commit할 때 위 검사를 자동으로) — 아래 섹션 참고
     - [] `uv run pre-commit install` — Git 훅 등록 (한 번만)
